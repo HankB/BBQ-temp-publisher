@@ -39,9 +39,39 @@ I (103675) esp32 main: voltage reading: 1548 mV
 I (103685) esp32 main: voltage reading: 1548 mV
 ```
 
-These seem reasonable enough. Next test will be to configure a second channel.
+These seem reasonable enough. Next test will be to configure a second channel. With two channels operating and the inputs to the two tied together, the readings seemed similar. (Averaging was diasabled for this and the next test.)
 
+```text
+I (31607) esp32 main: first   reading: 1567 mV
+I (31607) esp32 main: voltage reading: 1565 mV
+I (31607) esp32 main: voltage reading: 1565 mV
+I (31607) esp32 main: voltage reading: 1573 mV
+I (31617) esp32 main: voltage reading: 1565 mV
+I (31617) esp32 main:  
+I (31617) esp32 main: first   reading 2: 1573 mV
+I (31627) esp32 main: voltage reading 2: 1566 mV
+I (31627) esp32 main: voltage reading 2: 1569 mV
+I (31637) esp32 main: voltage reading 2: 1568 mV
+I (31647) esp32 main: voltage reading 2: 1568 mV
+```
 
+And with the inputs each on their own pot
+
+```text
+I (50327) esp32 main: first   reading: 1549 mV
+I (50327) esp32 main: voltage reading: 1570 mV
+I (50327) esp32 main: voltage reading: 1568 mV
+I (50327) esp32 main: voltage reading: 1569 mV
+I (50337) esp32 main: voltage reading: 1614 mV
+I (50337) esp32 main:  
+I (50337) esp32 main: first   reading 2: 3160 mV
+I (50347) esp32 main: voltage reading 2: 3160 mV
+I (50347) esp32 main: voltage reading 2: 3160 mV
+I (50357) esp32 main: voltage reading 2: 3160 mV
+I (50357) esp32 main: voltage reading 2: 3160 mV
+```
+
+Concerns about one channel affecting the other seem misplaced.
 
 ## Testing
 

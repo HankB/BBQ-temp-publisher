@@ -25,6 +25,8 @@
 
 static const bool chatty=false;
 static const adc1_channel_t channel_1 = ADC1_CHANNEL_0; // GPIO36
+static const adc1_channel_t channel_2 = ADC1_CHANNEL_3; // GPIO39
+
 
 // LED ========================================
 
@@ -120,5 +122,16 @@ void app_main()
         ADC_Results = get_adc_reading(channel_1, calibration_enabled);
         ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
         ESP_LOGI(TAG, " ");
-    }
+        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
+        ESP_LOGI(TAG, "first   reading 2: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
+        ESP_LOGI(TAG, " ");
+   }
 }
