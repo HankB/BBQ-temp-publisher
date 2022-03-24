@@ -21,8 +21,10 @@
 #include "wifi.h"
 #include "mqtt.h"
 #include "my_sntp.h"
+#include "my_adc.h"
 
 static const bool chatty=false;
+static const adc1_channel_t channel_1 = ADC1_CHANNEL_0; // GPIO36
 
 // LED ========================================
 
@@ -67,6 +69,8 @@ void app_main()
 {
     boot_count++;
     setup_LED(blink_led);
+    bool calibration_enabled;
+    uint32_t ADC_Results;
 
     // Initialize NVS
     esp_err_t ret = nvs_flash_init();
@@ -87,6 +91,8 @@ void app_main()
     time_t t = init_sntp();
     ESP_LOGI(TAG,"init_sntp(): %ld", t);
 
+    calibration_enabled = adc_calibration_init();
+
     // Following loop is superfluous. App continues to execute
     // even if app_main() exits
     int loop_counter = 0;
@@ -103,5 +109,16 @@ void app_main()
                     loop_counter, time(0), boot_count);
             mqtt_publish(NULL, uptime_buff);
         }
+        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
+        ESP_LOGI(TAG, "first   reading: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
+        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
+        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
+        ESP_LOGI(TAG, " ");
     }
 }
