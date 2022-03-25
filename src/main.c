@@ -72,7 +72,7 @@ void app_main()
     boot_count++;
     setup_LED(blink_led);
     bool calibration_enabled;
-    uint32_t ADC_Results;
+    //uint32_t ADC_Results;
 
     // Initialize NVS
     esp_err_t ret = nvs_flash_init();
@@ -103,14 +103,17 @@ void app_main()
         // Blink off (output low)
         if(chatty) printf("looping main\n");
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-        if((++loop_counter %60) == 0) 
+        if((++loop_counter %10) == 0) // publish every ten seconds
         {
             static const int buf_len = 100;
             char    uptime_buff[buf_len];
-            snprintf(uptime_buff, buf_len, "uptime %d, timestamp %ld, bootcount %d",
-                    loop_counter, time(0), boot_count);
+            snprintf(uptime_buff, buf_len, "uptime %d, timestamp %ld, ch1 %d, ch2 %d",
+                    loop_counter, time(0),
+                    get_adc_reading(channel_1, calibration_enabled),
+                    get_adc_reading(channel_2, calibration_enabled));
             mqtt_publish(NULL, uptime_buff);
         }
+        /*
         ADC_Results = get_adc_reading(channel_1, calibration_enabled);
         ESP_LOGI(TAG, "first   reading: %d mV", ADC_Results);
         ADC_Results = get_adc_reading(channel_1, calibration_enabled);
@@ -133,5 +136,6 @@ void app_main()
         ADC_Results = get_adc_reading(channel_2, calibration_enabled);
         ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
         ESP_LOGI(TAG, " ");
+        */
    }
 }
