@@ -9,6 +9,14 @@ Publish BBQ temperature readings via MQTT using an ESP32.
 
 This project is derived from <https://github.com/HankB/ESP32-ESP-IDF-start> which provides working WiFi, MQTT and SNTP.
 
+## C++ branch
+
+Explore migrating the project to C++. First stage is 
+
+1. "Soft" migration, e.g. renaming the source files `.c` -> `,cpp` and building (and fixing any errors or warnings.) 
+1. Identify C++ APIs for the ESP-IDF libraries in use and switch to them where available.
+1. Factor the code for the various facilities (e.g. WiFi, MQTT, NTP) to use standard C++ organization (e.g. classes and objects.)
+
 ## Motivation
 
 Provide a running log of temperature readings from a smoker/cooker automatically. The Maverick thermometer works reasonably well but I have to manually transcribe readings. An option was to use another radio to receive the transmissions, but it looked like this would be easier. 
