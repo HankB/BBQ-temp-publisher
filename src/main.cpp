@@ -30,7 +30,7 @@ static const adc1_channel_t channel_2 = ADC1_CHANNEL_3; // GPIO39
 
 // LED ========================================
 
-static const gpio_num_t blink_led = 2;
+static const gpio_num_t blink_led = (gpio_num_t)2;
 
 void setup_LED(gpio_num_t gpio)
 {
@@ -67,7 +67,7 @@ static const char *TAG = "esp32 main";
 RTC_DATA_ATTR static int boot_count = 0;
 
 
-void app_main()
+extern "C" void app_main()
 {
     boot_count++;
     setup_LED(blink_led);

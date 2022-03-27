@@ -2,12 +2,13 @@
 * Heavily cribbed from examples/protocols/sntp/main/sntp_example_main.c
 */
 
+extern "C" {
 #include <time.h>
 #include <sys/time.h>
 #include <esp_system.h>
 #include <esp_sntp.h>
 #include <esp_log.h>
-
+}
 
 #include "sntp.h"
 /* The following include is excluded from the git project and
