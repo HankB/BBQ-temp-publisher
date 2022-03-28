@@ -12,7 +12,6 @@ extern "C" {
 #include <nvs_flash.h>
 #include <esp_event.h>
 #include <esp_netif.h>
-// #include <protocol_examples_common.h>
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -125,8 +124,6 @@ void mqtt_app_start(void)
 
     esp_mqtt_client_config_t mqtt_cfg = {};
     mqtt_cfg.uri = broker;
-    //    .uri = broker,
-    //};
 
     client = esp_mqtt_client_init(&mqtt_cfg);
     /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
