@@ -1,8 +1,9 @@
 /* Provide code to read two ADC channels on ADC1. (ADC2 cannot be used when WiFi is
-* in use)
-* Cribbed from example single_read.c in .../examples/peripherals/adc/single_read/main
-*/
-extern "C" {
+ * in use)
+ * Cribbed from example single_read.c in .../examples/peripherals/adc/single_read/main
+ */
+extern "C"
+{
 #include <stdlib.h>
 #include <esp_log.h>
 #include <freertos/FreeRTOS.h>
@@ -12,8 +13,8 @@ extern "C" {
 
 #include "my_adc.h"
 
-#define ADC1_EXAMPLE_CHAN0          ADC1_CHANNEL_6
-#define desired_attenuation         ADC_ATTEN_DB_11
+#define ADC1_EXAMPLE_CHAN0 ADC1_CHANNEL_6
+#define desired_attenuation ADC_ATTEN_DB_11
 static const char *TAG = "ADC";
 static const adc_bits_width_t bit_width = ADC_WIDTH_BIT_12;
 
@@ -25,15 +26,22 @@ bool adc_calibration_init(void)
     bool cali_enable = false;
 
     ret = esp_adc_cal_check_efuse(ESP_ADC_CAL_VAL_EFUSE_VREF);
-    if (ret == ESP_ERR_NOT_SUPPORTED) {
+    if (ret == ESP_ERR_NOT_SUPPORTED)
+    {
         ESP_LOGW(TAG, "Calibration scheme not supported, skip software calibration");
-    } else if (ret == ESP_ERR_INVALID_VERSION) {
+    }
+    else if (ret == ESP_ERR_INVALID_VERSION)
+    {
         ESP_LOGW(TAG, "eFuse not burnt, skip software calibration");
-    } else if (ret == ESP_OK) {
+    }
+    else if (ret == ESP_OK)
+    {
         ESP_LOGW(TAG, "software calibration enabled");
         cali_enable = true;
         esp_adc_cal_characterize(ADC_UNIT_1, desired_attenuation, bit_width, 0, &adc1_chars);
-    } else {
+    }
+    else
+    {
         ESP_LOGE(TAG, "Invalid arg");
     }
 
@@ -46,14 +54,14 @@ bool adc_calibration_init(void)
 uint32_t get_adc_reading(adc1_channel_t channel, bool cali_enable)
 {
     esp_err_t ret = ESP_OK;
-    uint32_t    voltage = 0;
-    int         i;
+    uint32_t voltage = 0;
+    int i;
     static const int average_count = 6;
 
     ESP_ERROR_CHECK(adc1_config_width(ADC_WIDTH_BIT_12));
     ESP_ERROR_CHECK(adc1_config_channel_atten(channel, desired_attenuation));
 
-    for(i=0; i<average_count; i++)
+    for (i = 0; i < average_count; i++)
     {
         do
         {
@@ -69,5 +77,5 @@ uint32_t get_adc_reading(adc1_channel_t channel, bool cali_enable)
             return ret;
         }
     }
-    return (voltage+average_count/2)/average_count;
+    return (voltage + average_count / 2) / average_count;
 }
