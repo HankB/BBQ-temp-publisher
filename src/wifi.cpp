@@ -14,9 +14,9 @@ extern "C"
 /* The following include is excluded from the git project and
    must be crafted to meet your needs. It must define
 
-#define SSID "your_SSID"
+static uint8_t SSID[32] __attribute__((unused))= "your_SSID";
 #define  PWD "your_password"
-#define sntp_server "pfsense.localdomain"
+#define sntp_server "your.snpt.server"
 */
 #include "secrets.h"
 
