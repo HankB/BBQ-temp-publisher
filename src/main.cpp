@@ -96,10 +96,11 @@ extern "C" void app_main()
 
     // Following loop is superfluous. App continues to execute
     // even if app_main() exits
-    int loop_counter = 0;
+    //int loop_counter = 0;
     while (1)
     {
         // Blink off (output low)
+#if 0
         if (chatty)
             printf("looping main\n");
         vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -113,6 +114,16 @@ extern "C" void app_main()
                      get_adc_reading(channel_2, calibration_enabled));
             mqtt_publish(NULL, uptime_buff);
         }
+#else
+        vTaskDelay(1 / portTICK_PERIOD_MS);
+        static const int buf_len = 100;
+        char uptime_buff[buf_len];
+        snprintf(uptime_buff, buf_len, "timestamp %ld, ch1 %d, ch2 %d",
+                    time(0),
+                    get_adc_reading(channel_1, calibration_enabled),
+                    get_adc_reading(channel_2, calibration_enabled));
+        mqtt_publish(NULL, uptime_buff);
+#endif
         /*
         ADC_Results = get_adc_reading(channel_1, calibration_enabled);
         ESP_LOGI(TAG, "first   reading: %d mV", ADC_Results);
