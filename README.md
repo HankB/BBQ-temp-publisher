@@ -4,7 +4,7 @@ Publish BBQ temperature readings via MQTT using an ESP32.
 
 * Use the temperature probes from a Maverick ET732 Wireless Thermometer.
 * Connect the probes to an ESP32 (DOIT ESP32 DEVKIT V1 Board in hand) Which can read more than one Analog input.
-* Publish the readings using MQTT in JSONN format and usintg conventions suitable for my HomeAssistant setup.
+* Publish the readings using MQTT in JSON format and usintg conventions suitable for my HomeAssistant setup.
 * Use ESP-IDF framework and the PlatformIO plugin in VS Code (on Linux)
 
 This project is derived from <https://github.com/HankB/ESP32-ESP-IDF-start> which provides working WiFi, MQTT and SNTP.
@@ -106,5 +106,5 @@ Concerns about one channel affecting the other seem misplaced.
 
 ## Errata
 
-The boot_count in `main.c` is not counting up. 
+The boot_count in `main.c` is not counting up. Perhaps I do not understand what it is for.
 
