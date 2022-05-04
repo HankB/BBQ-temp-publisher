@@ -5,4 +5,6 @@
 
 bool adc_calibration_init(void);
 uint32_t get_adc_reading(adc1_channel_t channel, bool cali_enable);
+double calc_temp(int reading);
+
 #endif // MY_ADC_H

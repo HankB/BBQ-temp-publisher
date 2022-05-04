@@ -79,3 +79,20 @@ uint32_t get_adc_reading(adc1_channel_t channel, bool cali_enable)
     }
     return (voltage + average_count / 2) / average_count;
 }
+
+/* Calculation of temperature baased on sample readings and curve fitting.
+* https://github.com/HankB/BBQ-temp-publisher/blob/main/calibration/README.md
+*/
+
+double calc_temp(int reading) {
+    double accumulator;
+
+    accumulator = -1.385464e-14 * reading;
+    accumulator = (1.203064e-10 + accumulator) * reading;
+    accumulator = (-4.069134e-07 + accumulator) * reading;
+    accumulator = (6.709066e-04 + accumulator) * reading;
+    accumulator = (-6.062113e-01 + accumulator) * reading;
+    accumulator += 4.916665e+02;
+
+    return accumulator;
+}
