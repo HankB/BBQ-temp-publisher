@@ -17,6 +17,8 @@ Explore migrating the project to C++. First stage is
 1. Identify C++ APIs for the ESP-IDF libraries in use and switch to them where available.
 1. Factor the code for the various facilities (e.g. WiFi, MQTT, NTP) to use standard C++ organization (e.g. classes and objects.)
 
+The C++ branch is now merged into main. the first step (soft mirgation) is complete and other steps are deferred for now.
+
 ## Motivation
 
 Provide a running log of temperature readings from a smoker/cooker automatically. The Maverick thermometer works reasonably well but I have to manually transcribe readings. An option was to use another radio to receive the transmissions, but it looked like this would be easier. 
