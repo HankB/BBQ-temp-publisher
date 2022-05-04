@@ -102,8 +102,8 @@ extern "C" void app_main()
         // Blink off (output low)
         if (chatty)
             printf("looping main\n");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        if ((++loop_counter % 10) == 0) // publish every ten seconds
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        if ((++loop_counter % 20) == 0) // publish every forty seconds
         {
             static const int buf_len = 100;
             char uptime_buff[buf_len];
@@ -113,29 +113,5 @@ extern "C" void app_main()
                      get_adc_reading(channel_2, calibration_enabled));
             mqtt_publish(NULL, uptime_buff);
         }
-        /*
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "first   reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ESP_LOGI(TAG, " ");
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "first   reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ESP_LOGI(TAG, " ");
-        */
     }
 }
