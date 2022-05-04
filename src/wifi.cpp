@@ -1,18 +1,22 @@
 /* Code to support WiFi related functions for this project
-*/
+ */
 
+extern "C"
+{
 #include <freertos/FreeRTOS.h>
 #include <freertos/event_groups.h>
 #include <esp_wifi.h>
 #include <esp_event.h>
 #include <esp_log.h>
+#include <string.h>
+}
 
 /* The following include is excluded from the git project and
    must be crafted to meet your needs. It must define
 
-#define SSID "your_SSID"
+static uint8_t SSID[32] __attribute__((unused))= "your_SSID";
 #define  PWD "your_password"
-#define sntp_server "pfsense.localdomain"
+#define sntp_server "your.snpt.server"
 */
 #include "secrets.h"
 
@@ -27,7 +31,6 @@ static EventGroupHandle_t s_wifi_event_group;
 static const char *TAG = "wifi station";
 static const wifi_auth_mode_t threshold = WIFI_AUTH_OPEN;
 static int s_retry_count = 0;
-//static const int max_retries = 0; // where is CONFIG_ESP_MAXIMUM_RETRY defined?
 
 static void event_handler(void *arg, esp_event_base_t event_base,
                           int32_t event_id, void *event_data)
@@ -75,16 +78,10 @@ void init_wifi(void)
                                                         NULL,
                                                         &instance_got_ip));
 
-    wifi_config_t wifi_config = {
-        .sta = {
-            .ssid = SSID,
-            .password = PWD,
-            /* Setting a password implies station will connect to all security modes including WEP/WPA.
-             * However these modes are deprecated and not advisable to be used. Incase your Access point
-             * doesn't support WPA2, these mode can be enabled by commenting below line */
-            .threshold.authmode = threshold,
-        },
-    };
+    wifi_config_t wifi_config = {};
+    strncpy((char *)wifi_config.sta.ssid, (const char *)SSID, sizeof(wifi_config.sta.ssid));
+    strncpy((char *)wifi_config.sta.password, (const char *)PWD, sizeof(wifi_config.sta.password));
+    wifi_config.sta.threshold.authmode = threshold;
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());

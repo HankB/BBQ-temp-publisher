@@ -23,14 +23,13 @@
 #include "my_sntp.h"
 #include "my_adc.h"
 
-static const bool chatty=false;
+static const bool chatty = false;
 static const adc1_channel_t channel_1 = ADC1_CHANNEL_0; // GPIO36
 static const adc1_channel_t channel_2 = ADC1_CHANNEL_3; // GPIO39
 
-
 // LED ========================================
 
-static const gpio_num_t blink_led = 2;
+static const gpio_num_t blink_led = (gpio_num_t)2;
 
 void setup_LED(gpio_num_t gpio)
 {
@@ -44,16 +43,17 @@ void blink_led_task(void *param)
     while (1)
     {
         /* Blink off (output low) */
-        if(chatty) printf("Turning off the LED\n");
+        if (chatty)
+            printf("Turning off the LED\n");
         gpio_set_level(blink_led, 0);
         vTaskDelay(990 / portTICK_PERIOD_MS);
         /* Blink on (output high) */
-        if(chatty) printf("Turning on the LED\n");
+        if (chatty)
+            printf("Turning on the LED\n");
         gpio_set_level(blink_led, 1);
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
-
 
 // main =======================================
 
@@ -61,18 +61,17 @@ static const char *TAG = "esp32 main";
 /* Variable holding number of times ESP32 restarted since first boot.
  * It is placed into RTC memory using RTC_DATA_ATTR and
  * maintains its value when ESP32 wakes from deep sleep.
- * 
+ *
  * Assumes that WiFi connection is already established.
  */
 RTC_DATA_ATTR static int boot_count = 0;
 
-
-void app_main()
+extern "C" void app_main()
 {
     boot_count++;
     setup_LED(blink_led);
     bool calibration_enabled;
-    //uint32_t ADC_Results;
+    // uint32_t ADC_Results;
 
     // Initialize NVS
     esp_err_t ret = nvs_flash_init();
@@ -91,7 +90,7 @@ void app_main()
     init_wifi();
     mqtt_app_start();
     time_t t = init_sntp();
-    ESP_LOGI(TAG,"init_sntp(): %ld", t);
+    ESP_LOGI(TAG, "init_sntp(): %ld", t);
 
     calibration_enabled = adc_calibration_init();
 
@@ -101,41 +100,18 @@ void app_main()
     while (1)
     {
         // Blink off (output low)
-        if(chatty) printf("looping main\n");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        if((++loop_counter %10) == 0) // publish every ten seconds
+        if (chatty)
+            printf("looping main\n");
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        if ((++loop_counter % 20) == 0) // publish every forty seconds
         {
             static const int buf_len = 100;
-            char    uptime_buff[buf_len];
+            char uptime_buff[buf_len];
             snprintf(uptime_buff, buf_len, "uptime %d, timestamp %ld, ch1 %d, ch2 %d",
-                    loop_counter, time(0),
-                    get_adc_reading(channel_1, calibration_enabled),
-                    get_adc_reading(channel_2, calibration_enabled));
+                     loop_counter, time(0),
+                     get_adc_reading(channel_1, calibration_enabled),
+                     get_adc_reading(channel_2, calibration_enabled));
             mqtt_publish(NULL, uptime_buff);
         }
-        /*
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "first   reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_1, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading: %d mV", ADC_Results);
-        ESP_LOGI(TAG, " ");
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "first   reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ADC_Results = get_adc_reading(channel_2, calibration_enabled);
-        ESP_LOGI(TAG, "voltage reading 2: %d mV", ADC_Results);
-        ESP_LOGI(TAG, " ");
-        */
-   }
+    }
 }
