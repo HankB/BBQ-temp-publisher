@@ -124,4 +124,5 @@ See [calibration](calibration/README.md)
 
 ## Errata
 
-The boot_count in `main.c` is not counting up. Perhaps I do not understand what it is for.
+* The boot_count in `main.c` is not counting up. Perhaps I do not understand what it is for.
+* The Maverick ET732 is speced to read up to 572°F. With the circuit employed in this example the reading tops out at about 440°F.
