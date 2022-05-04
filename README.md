@@ -81,6 +81,22 @@ I (50357) esp32 main: voltage reading 2: 3160 mV
 
 Concerns about one channel affecting the other seem misplaced.
 
+## Physical circuit
+
+I took readings of probe resistance using a DVM with the probe in a water bath heated from room temperature to boiling and then in an oven heating to over 400°F. I constructed a spreadsheet (not included) to calculate the voltage drop across a resistor divider consisting of a resistor and the probe. I decided that a 47K ohm resistor connected to the 3V3 pin and other side to the probe and probe to ground would produce the best range of voltages for measuring temperature. in other words the measurement circuit is:
+
+```text
+3V3 --- 47K R --- probe --- GND
+               ^
+               | connection to ADC input
+```
+
+I constructed a circuit consisting of two sampling circuits.
+
+## Calibration
+
+See [calibration](calibration/README.md)
+
 ## Testing
 
 ...
@@ -107,4 +123,3 @@ Concerns about one channel affecting the other seem misplaced.
 ## Errata
 
 The boot_count in `main.c` is not counting up. Perhaps I do not understand what it is for.
-
