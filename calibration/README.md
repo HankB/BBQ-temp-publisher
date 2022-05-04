@@ -2,7 +2,7 @@
 
 ## Plan
 
-1. With the circuit constructed as described above and the code tagged as `0.1` collect temperature vs. ADC couint readings.
+1. With the circuit constructed as described above and the code tagged as `0.1data_collection` collect temperature vs. ADC count readings.
 1. Develop a relationship between couints and temperature that could be used to calculate temperature form the counts.
 
 ## Procedure
