@@ -102,15 +102,17 @@ extern "C" void app_main()
         // Blink off (output low)
         if (chatty)
             printf("looping main\n");
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
-        if ((++loop_counter % 20) == 0) // publish every forty seconds
+        vTaskDelay(1000 / portTICK_PERIOD_MS); // loop 1/second
+        if ((++loop_counter % 40) == 0) // publish every forty seconds
         {
             static const int buf_len = 100;
             char uptime_buff[buf_len];
-            snprintf(uptime_buff, buf_len, "uptime %d, timestamp %ld, ch1 %d, ch2 %d",
+            uint32_t    reading_1 = get_adc_reading(channel_1, calibration_enabled);
+            uint32_t    reading_2 = get_adc_reading(channel_2, calibration_enabled);
+            snprintf(uptime_buff, buf_len, "uptime %d, timestamp %ld, ch1 %d, %.1f°F ch2 %d, %.1f°F",
                      loop_counter, time(0),
-                     get_adc_reading(channel_1, calibration_enabled),
-                     get_adc_reading(channel_2, calibration_enabled));
+                     reading_1, calc_temp(reading_1),
+                     reading_2, calc_temp(reading_2));
             mqtt_publish(NULL, uptime_buff);
         }
     }
