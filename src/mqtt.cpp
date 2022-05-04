@@ -34,6 +34,11 @@ static const char *broker = "mqtt://olive.localdomain:1883";
 static const char *pub_topic = "esp32.1/pub";
 static const char *sub_topic = "esp32.1/sub";
 
+//CM/brandywine/NA/state { "t": 1651702631, "status": "still",  "uptime":"22:04:21", "CPU_pct":4.04, "mem_pct":10, "CPU_temp":37.932, "FS_pct":74 }
+static const char *will_topic = "CM/esp32.1/NA/state";
+static const int will_buf_len = 40;
+static char will_buf[will_buf_len];
+
 static void log_error_if_nonzero(const char *message, int error_code)
 {
     if (error_code != 0)
@@ -62,7 +67,8 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-        msg_id = esp_mqtt_client_publish(client, pub_topic, "here", 0, 1, 0);
+        snprintf( will_buf, will_buf_len, "{\"t\":%ld, \"status\":\"here\"}", time(0));
+        msg_id = esp_mqtt_client_publish(client, will_topic, will_buf, 0, 1, 0);
         ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
 
         msg_id = esp_mqtt_client_subscribe(client, sub_topic, 0);

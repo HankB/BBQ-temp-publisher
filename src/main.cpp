@@ -88,9 +88,9 @@ extern "C" void app_main()
     // start WiFi
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
     init_wifi();
-    mqtt_app_start();
     time_t t = init_sntp();
     ESP_LOGI(TAG, "init_sntp(): %ld", t);
+    mqtt_app_start();
 
     calibration_enabled = adc_calibration_init();
 
@@ -109,11 +109,11 @@ extern "C" void app_main()
             char uptime_buff[buf_len];
             uint32_t    reading_1 = get_adc_reading(channel_1, calibration_enabled);
             uint32_t    reading_2 = get_adc_reading(channel_2, calibration_enabled);
-            snprintf(uptime_buff, buf_len, "uptime %d, timestamp %ld, ch1 %d, %.1f°F ch2 %d, %.1f°F",
+            snprintf(uptime_buff, buf_len, "{\"uptime\": %d, \"t\": %ld, \"ch1\": %d, \"T1\": %.1f, \"ch2\": %d, \"T2\":%.1f}",
                      loop_counter, time(0),
                      reading_1, calc_temp(reading_1),
                      reading_2, calc_temp(reading_2));
-            mqtt_publish(NULL, uptime_buff);
+            mqtt_publish("HA/esp32.1/BBQ/temp", uptime_buff);
         }
     }
 }
